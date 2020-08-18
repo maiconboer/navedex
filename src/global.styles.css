@@ -1,0 +1,29 @@
+:root {
+  --primary-font: 'Montserrat', sans-serif;
+  --background-lighter: #FFFFFF;
+  --background-dark: #212121;
+  --color-text-lighter: #E5E5E5;
+  --color-text-dark: #212121;
+  --color-text-placeholder: #9E9E9E;  
+}                      
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--primary-font);
+  background-color: var(--background-lighter);
+}
+
+.content {
+  max-width: 1280px;
+  width: 100%;
+}
+
+button {
+  font-family: var(--primary-font);
+  cursor: pointer;
+}
