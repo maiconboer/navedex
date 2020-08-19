@@ -5,7 +5,7 @@ import api from '../services/api';
 export const UserContext = createContext();
 
 export const UserAuth = ({children}) => {
-  const [data, setData] = React.useState(null);
+  // const [data, setData] = React.useState(null);
   const [login, setLogin] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState(null);
@@ -13,7 +13,7 @@ export const UserAuth = ({children}) => {
 
   // Deslogando
   const userLogout = React.useCallback(async () => {
-    setData(null);
+    // setData(null);
     setError(null);
     setLoading(false);
     setLogin(false);
@@ -90,7 +90,7 @@ export const UserAuth = ({children}) => {
     <UserContext.Provider value={{ 
       userLogin, 
       userLogout, 
-      data, 
+      // data, 
       error, 
       loading, 
       login 
