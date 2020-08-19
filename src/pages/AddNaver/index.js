@@ -5,7 +5,7 @@ import Modal from 'react-modal';
 
 import api from '../../services/api';
 import { stylesModalConfirmation } from '../../utils/customStylesModal'
-import formatDate from '../../utils/formatDate';
+import { formatDateBR } from '../../utils/formatDate';
 import Header from '../../components/Header';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -33,8 +33,8 @@ const AddNaver = () => {
         const newNaver = {
           name,
           job_role,
-          birthdate: formatDate(birthdate),
-          admission_date: formatDate(admission_date),
+          birthdate: formatDateBR(birthdate),
+          admission_date: formatDateBR(admission_date),
           project,
           url
         }
@@ -54,10 +54,10 @@ const AddNaver = () => {
     }
   }
 
-  function closeModalConfirmation() {
+  const closeModalConfirmation= React.useCallback(() => {
     setModalConfirmationIsOpen(false);
     history.push('/');
-  }
+  },[history])
 
   return (
     <>

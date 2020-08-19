@@ -69,9 +69,6 @@ const Home = () => {
           }
         </div>
       </Section>
-      
-      {console.log(navers)}
-
     </>
   )
 }

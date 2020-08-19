@@ -30,28 +30,27 @@ const CardNaver = ({
   const [modalDeleteIsOpen, setModalDeleteIsOpen] = React.useState(false);
   const [modalConfirmationIsOpen, setModalConfirmationIsOpen] = React.useState(false);
 
-  function openModal() {
+  const openModal = React.useCallback(() => {
     setIsOpen(true);
-  }
+  },[])
 
-  function closeModal() {
+  const closeModal = React.useCallback(() => {
     setIsOpen(false);
-  }
+  },[])
 
-  function openModalDelete() {
+  const openModalDelete = React.useCallback(() =>{
     setModalDeleteIsOpen(true)
-  }
+  },[])
 
-  function closeModalDelete() {
+  const closeModalDelete = React.useCallback(() => {
     setModalDeleteIsOpen(false);
-  }
+  },[])
 
-  function closeModalConfirmation() {
+  const closeModalConfirmation = React.useCallback(() => {
     setModalConfirmationIsOpen(false);
-  }
+  },[])
 
   async function handleDeleteNaver(id) {
-
     const token = window.localStorage.getItem('@nave:token')
 
     try {
@@ -65,8 +64,6 @@ const CardNaver = ({
         setModalDeleteIsOpen(false);
         setModalConfirmationIsOpen(true)
       }
-
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -86,7 +83,7 @@ const CardNaver = ({
           </span>
 
           <span>
-            <Link to='/edit-naver'> <FaPen size={16} /> </Link>  
+            <Link to={`/edit-naver/${id}`}> <FaPen size={16} /> </Link>  
           </span>
         </div>
       </div>
@@ -122,7 +119,7 @@ const CardNaver = ({
               </span>
 
               <span>
-                <Link to='/edit-naver'> <FaPen size={16} /> </Link>  
+                <Link to={`/edit-naver/${id}`}> <FaPen size={16} /> </Link>  
               </span>
             </div>
           </div>
@@ -133,7 +130,7 @@ const CardNaver = ({
         isOpen={modalDeleteIsOpen}
         onRequestClose={closeModalDelete}
         style={stylesModalDeleteNaver}
-        contentLabel="Modal Naver"
+        contentLabel="Modal Delete"
       >
         <div className='modal-delete'>
           <p>Excluir Naver</p>
@@ -152,7 +149,7 @@ const CardNaver = ({
         isOpen={modalConfirmationIsOpen}
         onRequestClose={closeModalConfirmation}
         style={stylesModalConfirmation}
-        contentLabel="Modal Naver"
+        contentLabel="Modal confirmation"
       >
         <div className='modal-confirmation'>
           

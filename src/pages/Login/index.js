@@ -14,10 +14,7 @@ const Login = () => {
 
   function handleLogin(event) {
     event.preventDefault();
-
-    console.log(email, password)
-
-    userLogin(email, password)
+    userLogin(email, password);
   }
 
   return (

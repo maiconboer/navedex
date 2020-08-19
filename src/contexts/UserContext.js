@@ -63,8 +63,6 @@ export const UserAuth = ({children}) => {
           'Content-Type': 'application/json'
         }
       });
-
-      console.log(response)
       
       const { token } = response.data;
       const { id } = response.data;
