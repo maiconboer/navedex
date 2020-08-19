@@ -1,4 +1,3 @@
-
 export function formatDateBR(date) {
   const newDate = new Date(date)
   return newDate.toLocaleDateString('pt-BR', {timeZone: 'UTC'});

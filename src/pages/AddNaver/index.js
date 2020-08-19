@@ -1,16 +1,16 @@
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { FiChevronLeft } from 'react-icons/fi';
 import Modal from 'react-modal';
+import {Link, useHistory} from 'react-router-dom';
 
-import api from '../../services/api';
-import { stylesModalConfirmation } from '../../utils/customStylesModal'
-import { formatDateBR } from '../../utils/formatDate';
 import Header from '../../components/Header';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
-import { FiX } from 'react-icons/fi';
-import { Section } from './styles';
+import {NaversContext} from '../../contexts/NaversContext';
+import {stylesModalConfirmation} from '../../utils/customStylesModal'
+import {formatDateBR} from '../../utils/formatDate';
+import {FiX} from 'react-icons/fi';
+import {FiChevronLeft} from 'react-icons/fi';
+import {Section} from './styles';
 
 const AddNaver = () => {
   const [name, setName] = React.useState('');
@@ -21,36 +21,25 @@ const AddNaver = () => {
   const [url, setUrl] = React.useState('');
   const [modalConfirmationIsOpen, setModalConfirmationIsOpen] = React.useState(false);
   const history = useHistory();
+  const {addNaver, setNoNaverRegistered} = React.useContext(NaversContext);
 
   async function handleAddNaver(event) {
     event.preventDefault();
 
-    const token = window.localStorage.getItem('@nave:token')  
-    const id = window.localStorage.getItem('@nave:id')  
+    const newNaver = {
+      name,
+      job_role,
+      birthdate: formatDateBR(birthdate),
+      admission_date: formatDateBR(admission_date),
+      project,
+      url
+    }
 
-    try {
-      if(token && id) {
-        const newNaver = {
-          name,
-          job_role,
-          birthdate: formatDateBR(birthdate),
-          admission_date: formatDateBR(admission_date),
-          project,
-          url
-        }
-  
-        const response = await api.post('/navers', newNaver, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
+    const statusCode = await addNaver(newNaver);
 
-        if(response.status === 200) {
-          setModalConfirmationIsOpen(true);
-        }
-      }
-    } catch (error) {
-      console.log(error);
+    if(statusCode === 200) {
+      setNoNaverRegistered(false);
+      setModalConfirmationIsOpen(true);
     }
   }
 

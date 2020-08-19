@@ -4,6 +4,7 @@ import { FiChevronLeft } from 'react-icons/fi';
 import Modal from 'react-modal';
 
 import api from '../../services/api';
+import {NaversContext} from '../../contexts/NaversContext';
 import { stylesModalConfirmation } from '../../utils/customStylesModal'
 import { formatDateUS, formatDateBR } from '../../utils/formatDate';
 import Header from '../../components/Header';
@@ -22,6 +23,8 @@ const EditNaver = () => {
   const [url, setUrl] = React.useState('');
   const [modalConfirmationIsOpen, setModalConfirmationIsOpen] = React.useState(false);
   const history = useHistory();
+  const {editNaver} = React.useContext(NaversContext);
+
 
   React.useEffect(() => {
     async function getNaver() {
@@ -58,34 +61,23 @@ const EditNaver = () => {
 
   async function handleEditNaver(event) {
     event.preventDefault();
-    const token = window.localStorage.getItem('@nave:token')  
-
-    try {
-      if(token) {
-        const newNaver = {
-          name,
-          job_role,
-          birthdate: formatDateBR(birthdate),
-          admission_date: formatDateBR(admission_date),
-          project,
-          url
-        }
   
-        const response = await api.put(`/navers/${id}`, newNaver, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
+    const newNaver = {
+      name,
+      job_role,
+      birthdate: formatDateBR(birthdate),
+      admission_date: formatDateBR(admission_date),
+      project,
+      url
+    }
+   
+    const statusCode = await editNaver(newNaver, id);
 
-        if(response.status === 200) {
-          setModalConfirmationIsOpen(true);
-        }
-      }
-    } catch (error) {
-      console.log(error);
+    if(statusCode === 200) {
+      setModalConfirmationIsOpen(true);
     }
   }
-
+  
   function closeModalConfirmation() {
     setModalConfirmationIsOpen(false);
     history.push('/');

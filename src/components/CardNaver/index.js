@@ -2,8 +2,7 @@ import React from 'react';
 import Modal from 'react-modal';
 import { Link } from 'react-router-dom';
 
-import api from '../../services/api';
-
+import {NaversContext} from '../../contexts/NaversContext';
 import { 
   stylesModalNaver, 
   stylesModalDeleteNaver, 
@@ -29,6 +28,7 @@ const CardNaver = ({
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [modalDeleteIsOpen, setModalDeleteIsOpen] = React.useState(false);
   const [modalConfirmationIsOpen, setModalConfirmationIsOpen] = React.useState(false);
+  const {deleteNaver, getNavers} = React.useContext(NaversContext);
 
   const openModal = React.useCallback(() => {
     setIsOpen(true);
@@ -48,24 +48,15 @@ const CardNaver = ({
 
   const closeModalConfirmation = React.useCallback(() => {
     setModalConfirmationIsOpen(false);
-  },[])
+    getNavers();
+  },[getNavers])
 
   async function handleDeleteNaver(id) {
-    const token = window.localStorage.getItem('@nave:token')
+    const statusCode = await deleteNaver(id);
 
-    try {
-      const response = await api.delete(`/navers/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      if(response.status === 200) {
-        setModalDeleteIsOpen(false);
-        setModalConfirmationIsOpen(true)
-      }
-    } catch (error) {
-      console.log(error);
+    if(statusCode === 200) {
+      setModalDeleteIsOpen(false);
+      setModalConfirmationIsOpen(true);
     }
   }
 
@@ -73,11 +64,9 @@ const CardNaver = ({
     <Card>
       <div className='wrapper'> 
         <img src={url} alt={name} onClick={openModal} />
-
         <div>
           <p className='name'>{name}</p>
           <p className='job_role'>{job_role}</p>
-
           <span>
             <FaTrash size={16}  onClick={openModalDelete} />
           </span>
@@ -140,9 +129,7 @@ const CardNaver = ({
             <Button onClick={closeModalDelete}>Cancelar</Button>
             <Button onClick={() => handleDeleteNaver(id)}>Excluir</Button>
           </div>
-
-        </div>
-        
+        </div>  
       </Modal>
 
       <Modal 

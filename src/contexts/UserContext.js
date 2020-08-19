@@ -1,13 +1,12 @@
-import React, { createContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, {createContext} from 'react';
+import {useHistory} from 'react-router-dom';
 
 import api from '../services/api';
 export const UserContext = createContext();
 
 export const UserAuth = ({children}) => {
-  // const [data, setData] = React.useState(null);
-  const [login, setLogin] = React.useState(null);
-  const [loading, setLoading] = React.useState(false);
+  const [authenticate, setAuthenticate] = React.useState(null);
+  const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
   const history = useHistory();
 
@@ -16,7 +15,7 @@ export const UserAuth = ({children}) => {
     // setData(null);
     setError(null);
     setLoading(false);
-    setLogin(false);
+    setAuthenticate(false);
     window.localStorage.removeItem('@nave:token');
     window.localStorage.removeItem('@nave:id');
     history.push('/login');
@@ -33,7 +32,7 @@ export const UserAuth = ({children}) => {
         try {
           setError(null);
           setLoading(true);
-          setLogin(true);
+          setAuthenticate(true);
           history.push('/');
 
         } catch (error) {
@@ -43,7 +42,7 @@ export const UserAuth = ({children}) => {
         }
 
       } else {
-        setLogin(false);
+        setAuthenticate(false);
       }
     }
 
@@ -52,7 +51,7 @@ export const UserAuth = ({children}) => {
 
   // Logando
   async function userLogin(email, password) {
-    const user = { email, password }
+    const user = {email, password}
 
     try {
       setError(null);
@@ -64,20 +63,20 @@ export const UserAuth = ({children}) => {
         }
       });
       
-      const { token } = response.data;
-      const { id } = response.data;
+      const {token} = response.data;
+      const {id} = response.data;
 
       window.localStorage.setItem('@nave:token', token);
       window.localStorage.setItem('@nave:id', id);
 
       if(response.status === 200) {
-        setLogin(true);
+        setAuthenticate(true);
         history.push('/');
       } 
 
     } catch (error) {
       setError(error.message = 'Dados incorretos!');
-      setLogin(false);
+      setAuthenticate(false);
 
     } finally {
       setLoading(false);
@@ -87,11 +86,10 @@ export const UserAuth = ({children}) => {
   return (
     <UserContext.Provider value={{ 
       userLogin, 
-      userLogout, 
-      // data, 
+      userLogout,
       error, 
       loading, 
-      login 
+      authenticate 
     }}>
       {children}
     </UserContext.Provider>

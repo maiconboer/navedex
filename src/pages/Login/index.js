@@ -1,14 +1,14 @@
 import React from 'react';
 
-import { UserContext } from '../../contexts/UserContext';
+import {UserContext} from '../../contexts/UserContext';
 
 import logoImg from '../../assets/images/logo.svg';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
-import { Container } from './styles';
+import {Container} from './styles';
 
 const Login = () => {
-  const { userLogin, error } = React.useContext(UserContext)
+  const {userLogin, error} = React.useContext(UserContext)
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 

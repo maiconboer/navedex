@@ -1,4 +1,3 @@
-
 export const stylesModalNaver = {
   content : {
     display: 'flex',
