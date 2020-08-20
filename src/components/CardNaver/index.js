@@ -2,7 +2,7 @@ import React from 'react';
 import Modal from 'react-modal';
 import { Link } from 'react-router-dom';
 
-import {calculateAge, calculateCompanyTime} from '../../utils/calculateTimeBetweenTwoDates';
+import {calculateTimeBetweenTwoDates} from '../../utils/calculateTimeBetweenTwoDates';
 import {NaversContext} from '../../contexts/NaversContext';
 import { 
   stylesModalNaver, 
@@ -95,15 +95,15 @@ const CardNaver = ({
             <p>{job_role}</p>
 
             <span>Idade</span>
-            <p>{calculateAge(birthdate)} anos</p>
+            <p>{calculateTimeBetweenTwoDates(birthdate, 'age')} anos</p>
 
             <span>Tempo de empresa</span>
 
-            {calculateCompanyTime(admission_date) < 1 
+            {calculateTimeBetweenTwoDates(admission_date, 'companyTime') < 1 
               ? <p>Menos de 1 mês</p>
-              : calculateCompanyTime(admission_date) === 1 
-                ? <p>{calculateCompanyTime(admission_date)} mês</p>
-                : <p>{calculateCompanyTime(admission_date)} meses</p>
+              : calculateTimeBetweenTwoDates(admission_date, 'companyTime') === 1 
+                ? <p>{calculateTimeBetweenTwoDates(admission_date, 'companyTime')} mês</p>
+                : <p>{calculateTimeBetweenTwoDates(admission_date, 'companyTime')} meses</p>
             }
 
             <span>Projetos que participou</span>
