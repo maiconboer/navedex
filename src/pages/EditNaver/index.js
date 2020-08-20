@@ -1,68 +1,60 @@
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { FiChevronLeft } from 'react-icons/fi';
 import Modal from 'react-modal';
+import { Link, useHistory } from 'react-router-dom';
 
-import api from '../../services/api';
 import {NaversContext} from '../../contexts/NaversContext';
 import { stylesModalConfirmation } from '../../utils/customStylesModal'
 import { formatDateUS, formatDateBR } from '../../utils/formatDate';
 import Header from '../../components/Header';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
+import { FiChevronLeft } from 'react-icons/fi';
 import { FiX } from 'react-icons/fi';
 import { Section } from './styles';
 
 const EditNaver = () => {
-  const [id, setId] = React.useState(null);
+  const {showNaver, editNaver} = React.useContext(NaversContext);
+  const [modalConfirmationIsOpen, setModalConfirmationIsOpen] = React.useState(false);
+  const history = useHistory();
+
   const [name, setName] = React.useState('');
   const [job_role, setJob_role] = React.useState('');
   const [birthdate, setBirthdate] = React.useState('');
   const [admission_date, setAdmission_date] = React.useState('');
   const [project, setProject] = React.useState('');
   const [url, setUrl] = React.useState('');
-  const [modalConfirmationIsOpen, setModalConfirmationIsOpen] = React.useState(false);
-  const history = useHistory();
-  const {editNaver} = React.useContext(NaversContext);
-
+  const [loading, setloading] = React.useState(true)
 
   React.useEffect(() => {
-    async function getNaver() {
-      const token = window.localStorage.getItem('@nave:token')  
-      setId(window.location.pathname.split('/edit-naver/')[1])
+  
+    async function handleGetNaver() {
+      let mounted = true;
 
-      try {
-        if(id) {
-          const response = await api.get(`/navers/${id}`, {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          });
-  
-          if(response.status === 200) {
-            const { name, job_role, birthdate, admission_date, project, url } = response.data
-  
-            setName(name);
-            setJob_role(job_role);
-            setBirthdate(formatDateUS(birthdate));
-            setAdmission_date(formatDateUS(admission_date));
-            setProject(project);
-            setUrl(url);
-          }
-        }
-        
-      } catch (error) {
-        console.log(error)
+      const naver = await showNaver();
+      if(mounted) {
+        setloading(false);
+      }
+
+      setName(naver.name);
+      setJob_role(naver.job_role);
+      setBirthdate(formatDateUS(naver.birthdate));
+      setAdmission_date(formatDateUS(naver.admission_date));
+      setProject(naver.project);
+      setUrl(naver.url);
+      
+      return function cleanup() {
+        mounted = false
       }
     }
 
-    getNaver();
-  }, [id])
+    handleGetNaver();   
+  }, [showNaver])
 
   async function handleEditNaver(event) {
     event.preventDefault();
-  
-    const newNaver = {
+    const id = window.location.pathname.split('/edit-naver/')[1];  
+
+    const editedNaver = {
       name,
       job_role,
       birthdate: formatDateBR(birthdate),
@@ -70,14 +62,14 @@ const EditNaver = () => {
       project,
       url
     }
-   
-    const statusCode = await editNaver(newNaver, id);
 
+    const statusCode = await editNaver(editedNaver, id)
+  
     if(statusCode === 200) {
       setModalConfirmationIsOpen(true);
     }
   }
-  
+
   function closeModalConfirmation() {
     setModalConfirmationIsOpen(false);
     history.push('/');
@@ -87,13 +79,14 @@ const EditNaver = () => {
     <>
       <Header />
         <Section>
-
           <p>
             <Link to='/'><FiChevronLeft size={28} /></Link>
             Editar Naver
           </p>
           <form onSubmit={handleEditNaver}>
 
+          {loading ? <p>Carregando...</p> :
+            <>
             <div>
               <Input 
                 label='Nome'
@@ -163,7 +156,7 @@ const EditNaver = () => {
             </div>
             
             <Button type='submit'>Salvar</Button>
-          </form>
+           </> }</form>
 
           <Modal 
             isOpen={modalConfirmationIsOpen}

@@ -15,7 +15,9 @@ const Input = ({
   
   return (
     <>
-      <Label htmlFor={name}>{label}</Label>
+      <Label htmlFor={name}>{label} 
+      {error && <span className='error'> - {error}</span>}
+      </Label>
       <InputElement
         type={type} 
         id={name} 
@@ -25,7 +27,6 @@ const Input = ({
         onBlur={onBlur}
         {...rest}
       />
-      {error && <p>{error}</p>}   
     </>
   )
 }

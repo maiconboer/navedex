@@ -2,6 +2,7 @@ import React from 'react';
 import Modal from 'react-modal';
 import { Link } from 'react-router-dom';
 
+import {calculateAge, calculateCompanyTime} from '../../utils/calculateTimeBetweenTwoDates';
 import {NaversContext} from '../../contexts/NaversContext';
 import { 
   stylesModalNaver, 
@@ -94,10 +95,16 @@ const CardNaver = ({
             <p>{job_role}</p>
 
             <span>Idade</span>
-            <p>{birthdate}</p>
+            <p>{calculateAge(birthdate)} anos</p>
 
             <span>Tempo de empresa</span>
-            <p>{admission_date}</p>
+
+            {calculateCompanyTime(admission_date) < 1 
+              ? <p>Menos de 1 mês</p>
+              : calculateCompanyTime(admission_date) === 1 
+                ? <p>{calculateCompanyTime(admission_date)} mês</p>
+                : <p>{calculateCompanyTime(admission_date)} meses</p>
+            }
 
             <span>Projetos que participou</span>
             <p>{project}</p>
@@ -112,6 +119,7 @@ const CardNaver = ({
               </span>
             </div>
           </div>
+          <FiX size={20} onClick={closeModal} className='icon-close-modal' />
         </div>     
       </Modal>
 
@@ -148,7 +156,6 @@ const CardNaver = ({
           <FiX size={20} onClick={closeModalConfirmation} />
         </div>
       </Modal>
-
     </Card>
   )
 }

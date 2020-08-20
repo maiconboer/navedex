@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import {Switch, Route, Redirect} from 'react-router-dom';
 
 import {UserContext} from '../contexts/UserContext';
@@ -8,7 +8,6 @@ import Login from '../pages/Login';
 import Home from '../pages/Home';
 import AddNaver from '../pages/AddNaver';
 import EditNaver from '../pages/EditNaver';
-import Page404 from '../pages/Page404';
 
 const PrivateRoute = ({component: Component, ...rest}) => {
   const {authenticate} = React.useContext(UserContext);
@@ -33,7 +32,6 @@ const Routes = () => {
 
       {/* public routes */}
       <Route path='/login' exact component={Login} />
-      <Route path='*' component={Page404} /> 
     </Switch>
   )
 }

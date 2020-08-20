@@ -13,10 +13,8 @@ const Header = () => {
 
   return (
     <Container>
-
       <img src={logoImg} alt='Nave.rs'/>
       <span onClick={handleLogout}>Sair</span>
-
     </Container>
   )
 }

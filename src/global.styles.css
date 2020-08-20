@@ -5,6 +5,7 @@
   --color-text-lighter: #E5E5E5;
   --color-text-dark: #212121;
   --color-text-placeholder: #9E9E9E;  
+  --color-text-error: #FF0000;  
 }                      
 
 * {
@@ -28,11 +29,29 @@ button {
   cursor: pointer;
 }
 
+.error {
+  font-size: 12px;
+  font-weight: normal;
+  color: var(--color-text-error);
+}
+
+.error-login {
+  font-size: 16px;
+  margin-top: 8px;
+  color: var(--color-text-error);
+
+}
+
 /* modais */
 .modal-naver {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 32px;
   max-width: 1000px;
   width: 100%;
+}
+
+.modal-naver .image {
+  height: 500px;
 }
 
 .modal-naver img {
@@ -64,7 +83,13 @@ button {
 }
 
 .modal-naver .informations .buttons-delete-edit svg {
+  cursor: pointer;
   margin-right: 12px;
+}
+
+.modal-naver .icon-close-modal {
+  cursor: pointer;
+  margin-top: 8px;
 }
 
 .modal-delete p {
@@ -102,4 +127,60 @@ button {
 
 .modal-confirmation svg {
   cursor: pointer;
+}
+
+/* media */
+@media screen and (max-width: 960px) {
+  .modal-naver {
+    grid-template-columns: 1fr 2fr 32px;
+    justify-items: left;
+    height: 90%;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .modal-naver .image {
+    display: flex;
+    align-self: center;
+    height: 400px;
+  }
+  
+  .modal-naver img {
+    width: 280px;
+    height: 100%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .modal-naver {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .modal-naver .image {
+    height: 240px;
+  }
+  
+  .modal-naver img {
+    height: 240px;
+    margin-right: 10px;
+  }
+
+  .modal-naver .icon-close-modal {
+    position: absolute;
+    right: 8px;
+    margin-top: 8px;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .modal-naver .image {
+    height: 240px;
+  }
+  
+  .modal-naver img {
+    width: 230px;
+    height: 88%;
+    margin-right: 10px;
+  }
 }

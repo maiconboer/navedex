@@ -2,18 +2,18 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 
 import {NaversContext} from '../../contexts/NaversContext';
+import Head from '../../components/Head';
 import Header from '../../components/Header';
 import Button from '../../components/Button';
 import CardNaver from '../../components/CardNaver';
 import {Section} from './styles';
 
 const Home = () => {
-  const {navers, loading, noNaverRegistered, setNoNaverRegistered} = React.useContext(NaversContext)
-
-  console.log(noNaverRegistered)
+  const {navers, loading, noNaverRegistered} = React.useContext(NaversContext) 
 
   return (
     <>
+      <Head title='Home' />
       <Header />
       <Section>
         <div className='top-section'>
@@ -41,12 +41,12 @@ const Home = () => {
               />
             ))      
           }
-
-          {loading 
-            ? <p>Carregando...</p>
-            : noNaverRegistered === true ? <p>Não há Navers cadastrados!</p> : '' 
-          }
         </div>
+
+        {loading 
+          ? <p className='loading'>Carregando...</p>
+          : noNaverRegistered === true ? <p>Não há Navers cadastrados!</p> : '' 
+        }
       </Section>
     </>
   )

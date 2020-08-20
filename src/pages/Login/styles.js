@@ -25,15 +25,7 @@ export const Container = styled.section`
       flex-direction: column;
       justify-content: center;
       width: 100%;
-      padding: 40px 32px;
-      position: relative;
-      
-      span {
-        position: absolute;
-        margin: 20px 0 0 0;
-        bottom: 10px;
-        color: red;
-      }
+      padding: 32px;
     }
   }
 `;

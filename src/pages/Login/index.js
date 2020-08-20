@@ -1,24 +1,26 @@
 import React from 'react';
 
 import {UserContext} from '../../contexts/UserContext';
-
+import useValidatorField from '../../hooks/useValidatorField';
 import logoImg from '../../assets/images/logo.svg';
+import Head from '../../components/Head';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import {Container} from './styles';
 
 const Login = () => {
   const {userLogin, error} = React.useContext(UserContext)
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const email = useValidatorField('email');
+  const password = useValidatorField();
 
   function handleLogin(event) {
     event.preventDefault();
-    userLogin(email, password);
+    userLogin(email.value, password.value);
   }
 
   return (
     <Container>
+      <Head title='Login' />
       <div>
         <img src={logoImg} alt='Nave.rs'/>
 
@@ -28,10 +30,9 @@ const Login = () => {
             type='email'
             id='email'
             name='email'
-            value={email}
-            onChange={({target}) => setEmail(target.value)}
             placeholder='E-mail'
             required
+            {...email}
           />
 
           <Input 
@@ -39,16 +40,14 @@ const Login = () => {
             type='password'
             id='password'
             name='password'
-            value={password}
-            onChange={({target}) => setPassword(target.value)}
             placeholder='Senha'
             required
+            {...password}
           />
 
-          
-
           <Button type='submit'>Entrar</Button>
-          {error && <span>{error}</span>}
+          
+          {error && <p className='error-login'>{error}</p>}
         </form>
       </div>
     </Container>

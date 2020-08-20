@@ -2,10 +2,12 @@ import React from 'react';
 import Modal from 'react-modal';
 import {Link, useHistory} from 'react-router-dom';
 
+import Head from '../../components/Head';
 import Header from '../../components/Header';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import {NaversContext} from '../../contexts/NaversContext';
+import useValidatorField from '../../hooks/useValidatorField';
 import {stylesModalConfirmation} from '../../utils/customStylesModal'
 import {formatDateBR} from '../../utils/formatDate';
 import {FiX} from 'react-icons/fi';
@@ -13,33 +15,36 @@ import {FiChevronLeft} from 'react-icons/fi';
 import {Section} from './styles';
 
 const AddNaver = () => {
-  const [name, setName] = React.useState('');
-  const [job_role, setJob_role] = React.useState('');
+  const {addNaver, setNoNaverRegistered} = React.useContext(NaversContext);
+  const history = useHistory();
+
+  const name = useValidatorField('name');
+  const job_role = useValidatorField('job_role');
+  const url = useValidatorField('url');
   const [birthdate, setBirthdate] = React.useState('');
   const [admission_date, setAdmission_date] = React.useState('');
   const [project, setProject] = React.useState('');
-  const [url, setUrl] = React.useState('');
   const [modalConfirmationIsOpen, setModalConfirmationIsOpen] = React.useState(false);
-  const history = useHistory();
-  const {addNaver, setNoNaverRegistered} = React.useContext(NaversContext);
 
   async function handleAddNaver(event) {
     event.preventDefault();
 
     const newNaver = {
-      name,
-      job_role,
+      name: name.value,
+      job_role: job_role.value,
       birthdate: formatDateBR(birthdate),
       admission_date: formatDateBR(admission_date),
       project,
-      url
+      url: url.value
     }
 
-    const statusCode = await addNaver(newNaver);
+    if(name.validation() && job_role.validation() && url.validation()) {
+      const statusCode = await addNaver(newNaver);
 
-    if(statusCode === 200) {
-      setNoNaverRegistered(false);
-      setModalConfirmationIsOpen(true);
+      if(statusCode === 200) {
+        setNoNaverRegistered(false);
+        setModalConfirmationIsOpen(true);
+      }
     }
   }
 
@@ -50,6 +55,7 @@ const AddNaver = () => {
 
   return (
     <>
+      <Head title='Add Naver' />
       <Header />
         <Section>
 
@@ -65,10 +71,9 @@ const AddNaver = () => {
                 type='text'
                 id='name'
                 name='name'
-                value={name}
-                onChange={({target}) => setName(target.value)}
-                placeholder='Nome'
+                placeholder='Nome...'
                 required
+                {...name}
               />
 
               <Input 
@@ -88,7 +93,7 @@ const AddNaver = () => {
                 name='project'
                 value={project}
                 onChange={({target}) => setProject(target.value)}
-                placeholder='Projetos que participou'
+                placeholder='Projetos que participou...'
                 required
               />
             </div>
@@ -99,10 +104,9 @@ const AddNaver = () => {
                 type='text'
                 id='job_role'
                 name='job_role'
-                value={job_role}
-                onChange={({target}) => setJob_role(target.value)}
-                placeholder='Cargo'
+                placeholder='Cargo...'
                 required
+                {...job_role}
               />
 
               <Input 
@@ -116,14 +120,13 @@ const AddNaver = () => {
               />
 
               <Input 
-                label='URL da foto do avatar'
+                label='URL - avatar'
                 type='text'
                 id='url'
                 name='url'
-                value={url}
-                onChange={({target}) => setUrl(target.value)}
-                placeholder='URL da foto do avatar'
+                placeholder='URL da foto do avatar...'
                 required
+                {...url}
               />
             </div>
             

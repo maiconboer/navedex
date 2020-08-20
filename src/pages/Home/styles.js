@@ -3,7 +3,6 @@ import styled from 'styled-components';
 export const Section = styled.section`
   max-width: 1280px;
   width: 100%;
-  
   margin: 0 auto;
   padding: 24px 32px;
 
@@ -21,6 +20,14 @@ export const Section = styled.section`
     button {
       width: 176px;
     }
+
+    @media screen and (max-width: 400px) {
+      flex-direction: column;
+
+      button {
+        margin-top: 18px;
+      }
+    }
   }
 
   .cards-navers {
@@ -31,5 +38,9 @@ export const Section = styled.section`
     @media screen and (max-width: 1279px) {
       justify-content: center;
     }
+  }
+
+  @media screen and (max-width: 400px) {
+    padding: 10px;
   }
 `;

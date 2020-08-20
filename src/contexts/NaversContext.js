@@ -78,6 +78,36 @@ export const Navers = ({children}) => {
     }
   }
 
+  async function showNaver() {
+    const token = window.localStorage.getItem('@nave:token');  
+    const id = window.location.pathname.split('/edit-naver/')[1];
+  
+    try {
+      if(id) {
+        const response = await api.get(`/navers/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+
+        if(response.status === 200) {
+          const { 
+            name, 
+            job_role, 
+            birthdate, 
+            admission_date, 
+            project, 
+            url 
+          } = response.data
+
+          return {name, job_role, birthdate, admission_date, project, url}
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async function addNaver(newNaver) {  
     const token = window.localStorage.getItem('@nave:token');  
     const id = window.localStorage.getItem('@nave:id');
@@ -142,6 +172,7 @@ export const Navers = ({children}) => {
       navers, 
       setNavers,
       getNavers,
+      showNaver,
       addNaver,
       editNaver,
       deleteNaver,
