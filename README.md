@@ -98,7 +98,7 @@ $ yarn install
 # Inicie a aplicação
 $ yarn start
 ```
-Aplicação rodando no endereço: http://localhost:3000/
+Aplicação rodando no endereço: http://localhost:3000
 
 **Para efetuar login, é necessário criar o usuário, fazendo um post na rota ```{{apiUrl}}/users/signup``` enviando e-mail e senha no corpo da requisição.**
 
